@@ -1,0 +1,8 @@
+uvicorn
+fastapi
+setuptools
+ujson
+asyncpg
+aiogram
+uvloop
+gunicorn

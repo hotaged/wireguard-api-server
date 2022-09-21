@@ -1,0 +1,43 @@
+version: "3.0"
+
+
+volumes:
+  modules:
+  configs:
+
+
+services:
+  wireguard-api:
+    container_name: wireguard-api-container
+    build: .
+    environment:
+     - PYTHONDONTWRITEBYTECODE=1
+     - PYTHONUNBUFFERED=1
+    command: bash -c "gunicorn --bind 0.0.0.0:8000 wgapi.__main__:app -w 8 -k uvicorn.workers.UvicornWorker "
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - configs:/config
+
+
+  wireguard-server:
+    image: linuxserver/wireguard
+    container_name: wireguard-server-container
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PEERS=200
+    ports:
+      - "51820:51820/udp"
+    volumes:
+      - configs:/config
+      - modules:/lib/modules
+    restart: unless-stopped
