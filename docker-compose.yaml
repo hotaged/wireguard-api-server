@@ -34,7 +34,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - PEERS=200
+      - PEERS=${PEERS}
     ports:
       - "51820:51820/udp"
     volumes:

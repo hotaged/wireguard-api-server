@@ -1,3 +1,4 @@
+import asyncio
 import typing
 from os import environ, listdir
 from fastapi.responses import FileResponse, UJSONResponse
@@ -67,6 +68,10 @@ class Peer(BaseModel):
 
 @app.on_event('startup')
 async def load_configs():
+    # Waiting 10 seconds to let wireguard
+    # server initialize properly
+    await asyncio.sleep(10)
+
     def only_peers_filter(directory: str) -> bool:
         return directory.startswith('peer')
 
