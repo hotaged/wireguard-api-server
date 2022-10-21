@@ -13,11 +13,11 @@ services:
     environment:
      - PYTHONDONTWRITEBYTECODE=1
      - PYTHONUNBUFFERED=1
-    command: bash -c "gunicorn --bind 0.0.0.0:${PORT} wgapi.__main__:app -w ${WORKERS} -k uvicorn.workers.UvicornWorker "
+    command: bash -c "gunicorn -b 0.0.0.0:8000 wgapi.__main__:app -w ${WORKERS} -k uvicorn.workers.UvicornWorker "
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "${PORT}:8000"
     volumes:
       - configs:/config
       - ${PATH_TO_DOCKER_SOCK}:/var/run/docker.sock
