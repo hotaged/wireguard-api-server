@@ -20,6 +20,7 @@ services:
       - "8000:8000"
     volumes:
       - configs:/config
+      - ${PATH_TO_DOCKER_SOCK}:/var/run/docker.sock
 
 
   wireguard-server:
